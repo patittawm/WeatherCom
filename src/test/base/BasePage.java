@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class BasePage {
+
     protected WebDriver driver;
 
     public BasePage(WebDriver driver){
@@ -28,23 +29,23 @@ public class BasePage {
         }
     }
     public void click(WebElement element){
+        waitForElementClickability(element);
         moveIntoView(element);
         highlightElement(element);
-        waitForElementClickability(element);
         element.click();
     }
 
     public void sendKeys(WebElement element, String inputText){
+        waitForElementVisibility(element);
         moveIntoView(element);
         highlightElement(element);
-        waitForElementVisibility(element);
         element.sendKeys(inputText);
     }
 
     public String getText(WebElement element){
+        waitForElementVisibility(element);
         moveIntoView(element);
         highlightElement(element);
-        waitForElementVisibility(element);
         return element.getText();
     }
 
@@ -54,7 +55,7 @@ public class BasePage {
     }
 
     public void waitForElementVisibility(WebElement element){
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        WebDriverWait wait = new WebDriverWait(driver, 40);
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
@@ -87,7 +88,6 @@ public class BasePage {
 
         //capturing GUID of all windows
         Set<String> allWindows = driver.getWindowHandles();
-
         //switching driver to next window and based on the title of the page printing out some text
         for (String each : allWindows) {
             Thread.sleep(1000);

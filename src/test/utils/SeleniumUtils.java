@@ -6,11 +6,27 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.Set;
+
 public class SeleniumUtils {
-    /**
-     * This method will move your view to the given element
-     * @param driver is WebDriver
-     */
+
+    public static String switchToWindowAndVerifyTitle(WebDriver driver, ExtentManager extentManager){
+        String currentWindowID = driver.getWindowHandle();
+        String title = "";
+
+        Set<String> allWindowIDs = driver.getWindowHandles();
+        for(String each: allWindowIDs){
+            if (!each.equals(currentWindowID)){
+                driver.switchTo().window(each);
+                title = driver.getTitle();
+                extentManager.logScreenshot();
+                driver.close();
+            }
+        }
+
+        driver.switchTo().window(currentWindowID);
+        return title;
+    }
 
     public static void scrollIntoView(WebDriver driver, WebElement element){
         JavascriptExecutor jExecutor = (JavascriptExecutor) driver;

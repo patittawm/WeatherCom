@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -42,19 +43,21 @@ public class TempClass {
     @Test(testName = "Connect Social")
     public void test3456() throws InterruptedException {
         //Close Pop-up
-        WebDriverWait explicitWait = new WebDriverWait(driver, 30);
+        WebDriverWait explicitWait = new WebDriverWait(driver, 40);
         explicitWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div//h2[text()='Your Privacy']"))));
         driver.findElement(By.xpath("//*[@class='Icon--icon--3wCKh Icon--actionTheme--sZu_q PrivacyDataNotice--closeButton--1fBzh']")).click();
 
         //scroll down to footer
         scrollIntoView(driver, driver.findElement(By.xpath("//span[@class='Footer--connect--x2PKn']")));
-        //Click to FB TW IG YT
+
         explicitWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//span[@class='Footer--connect--x2PKn']"))));
 
+        //Click to FB TW IG YT
         List<WebElement> links = driver.findElements(By.xpath("//div[@class='Footer--socialLogos--2MwDy']//a"));
         links.forEach(link -> link.click());
 
         switchToNextWindow(driver);
+
     }
 
     @Test(testName = "10 Day")
@@ -83,11 +86,11 @@ public class TempClass {
 
 4. Click on following buttons in the bottom of the page:
 
-    facebook
+    facebook..The Weather Channel - Home | Facebook
 
-    twitter
+    twitter..The Weather Channel (@weatherchannel) / Twitter
 
-    youtube
+    youtube..The Weather Channel - YouTube
 
 5. Print out titles of all 3 pages opened above
 

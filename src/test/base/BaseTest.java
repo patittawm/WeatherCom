@@ -5,28 +5,46 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import utils.ConfigReader;
+import utils.ExtentManager;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {// contains all configuration method to the case
     private WebDriver driver;  // if public don't have to change driver in another class to getDriver()
-
+    protected ExtentManager extentManager;
     private String filePath = "src/test/data/config/configuration.properties";
 
+    @BeforeSuite
+    public void startReporter(){
+        extentManager = new ExtentManager();
+        extentManager.createReport();
+    }
+
+    @AfterSuite
+    public void endReporter(){
+        extentManager.closeReport();
+    }
+
     @BeforeMethod
-    public void setUp(){
+    public void setUp(Method method){
         initializeDriver(ConfigReader.readProperty(filePath, "browser"));
         driver.get(ConfigReader.readProperty(filePath, "url"));
+        extentManager.createTestReport(driver, method);
     }
 
     @AfterMethod
-    public void tearDown(){
-
+    public void tearDown(ITestResult result){
+        extentManager.closeTestReport(result);
         driver.quit();
     }
+
     public void initializeDriver(String browser){
         driver = null;
 
